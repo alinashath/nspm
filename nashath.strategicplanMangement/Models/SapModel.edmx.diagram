@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="dda773632d3e40049a424f825734005b" Name="Diagram1">
+        <EntityTypeShape EntityType="StrategicPlanModel.Schedule" Width="1.5" PointX="7.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="StrategicPlanModel.Section" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StrategicPlanModel.Status" Width="1.5" PointX="9.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="StrategicPlanModel.StrategicAction" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="StrategicPlanModel.StrategicActivity" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StrategicPlanModel.Strategy" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="StrategicPlanModel.StrategySection" Width="1.5" PointX="3" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="StrategicPlanModel.FK_StrategicActivitySchedule" ManuallyRouted="false" />
+        <AssociationConnector Association="StrategicPlanModel.FK_SectionsStrategySections" ManuallyRouted="false" />
+        <AssociationConnector Association="StrategicPlanModel.FK_StrategicActivityStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="StrategicPlanModel.FK_StrategicActionsStrategicActivity" ManuallyRouted="false" />
+        <AssociationConnector Association="StrategicPlanModel.FK_StrategyStrategicActions" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="StrategicPlanModel.Pillers" Width="1.5" PointX="5.25" PointY="0.5" />
+        <AssociationConnector Association="StrategicPlanModel.PillersStrategy" />
+        <EntityTypeShape EntityType="StrategicPlanModel.sysdiagram" Width="1.5" PointX="0.75" PointY="7.75" />
+        <AssociationConnector Association="StrategicPlanModel.FK_StrategyStrategySections" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

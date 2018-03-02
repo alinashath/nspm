@@ -1,0 +1,589 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="StrategicPlanModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Pillers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PillerDV" Type="nvarchar(max)" />
+          <Property Name="PillerEN" Type="nvarchar(max)" />
+          <Property Name="PillerDescDV" Type="nvarchar(max)" />
+          <Property Name="PillerDescEN" Type="nvarchar(max)" />
+          <Property Name="PillerNo" Type="int" />
+        </EntityType>
+        <EntityType Name="Schedules">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StrategicActivityID" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Qt_One" Type="bit" />
+          <Property Name="Qt_Two" Type="bit" />
+          <Property Name="Qt_Three" Type="bit" />
+          <Property Name="Qt_Four" Type="bit" />
+        </EntityType>
+        <EntityType Name="Sections">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SectionNameDV" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SectionNameEN" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StrategicActionID" Type="int" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+          <Property Name="StatusDV" Type="nvarchar(max)" />
+          <Property Name="StatusEN" Type="nvarchar(max)" />
+          <Property Name="StatusUser" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StrategicActions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefCode" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ActionDV" Type="nvarchar(max)" />
+          <Property Name="ActionEN" Type="nvarchar(max)" />
+          <Property Name="StrategyID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StrategicActivities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StrategicActionID" Type="int" Nullable="false" />
+          <Property Name="ActivityDV" Type="nvarchar(max)" />
+          <Property Name="ActivityEN" Type="nvarchar(max)" />
+          <Property Name="BudgetNB" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="BudgetGrant" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Strategies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefCode" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="StrategyDV" Type="nvarchar(max)" />
+          <Property Name="StrategyEN" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Result" Type="nvarchar(max)" />
+          <Property Name="PillerID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StrategySections">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StrategyID" Type="int" Nullable="false" />
+          <Property Name="SectionID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_PillersStrategy">
+          <End Role="Pillers" Type="Self.Pillers" Multiplicity="1" />
+          <End Role="Strategies" Type="Self.Strategies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pillers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Strategies">
+              <PropertyRef Name="PillerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SectionsStrategySections">
+          <End Role="Sections" Type="Self.Sections" Multiplicity="1" />
+          <End Role="StrategySections" Type="Self.StrategySections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sections">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StrategySections">
+              <PropertyRef Name="SectionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StrategicActionsStrategicActivity">
+          <End Role="StrategicActions" Type="Self.StrategicActions" Multiplicity="1" />
+          <End Role="StrategicActivities" Type="Self.StrategicActivities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StrategicActions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StrategicActivities">
+              <PropertyRef Name="StrategicActionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StrategicActivitySchedule">
+          <End Role="StrategicActivities" Type="Self.StrategicActivities" Multiplicity="1" />
+          <End Role="Schedules" Type="Self.Schedules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StrategicActivities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Schedules">
+              <PropertyRef Name="StrategicActivityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StrategicActivityStatus">
+          <End Role="StrategicActivities" Type="Self.StrategicActivities" Multiplicity="1" />
+          <End Role="Status" Type="Self.Status" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StrategicActivities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Status">
+              <PropertyRef Name="StrategicActionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StrategyStrategicActions">
+          <End Role="Strategies" Type="Self.Strategies" Multiplicity="1" />
+          <End Role="StrategicActions" Type="Self.StrategicActions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Strategies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StrategicActions">
+              <PropertyRef Name="StrategyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StrategyStrategySections">
+          <End Role="StrategicActions" Type="Self.StrategicActions" Multiplicity="1" />
+          <End Role="StrategySections" Type="Self.StrategySections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StrategicActions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StrategySections">
+              <PropertyRef Name="StrategyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StrategicPlanModelStoreContainer">
+          <EntitySet Name="Pillers" EntityType="Self.Pillers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schedules" EntityType="Self.Schedules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sections" EntityType="Self.Sections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StrategicActions" EntityType="Self.StrategicActions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StrategicActivities" EntityType="Self.StrategicActivities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Strategies" EntityType="Self.Strategies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StrategySections" EntityType="Self.StrategySections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PillersStrategy" Association="Self.FK_PillersStrategy">
+            <End Role="Pillers" EntitySet="Pillers" />
+            <End Role="Strategies" EntitySet="Strategies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SectionsStrategySections" Association="Self.FK_SectionsStrategySections">
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="StrategySections" EntitySet="StrategySections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StrategicActionsStrategicActivity" Association="Self.FK_StrategicActionsStrategicActivity">
+            <End Role="StrategicActions" EntitySet="StrategicActions" />
+            <End Role="StrategicActivities" EntitySet="StrategicActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StrategicActivitySchedule" Association="Self.FK_StrategicActivitySchedule">
+            <End Role="StrategicActivities" EntitySet="StrategicActivities" />
+            <End Role="Schedules" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StrategicActivityStatus" Association="Self.FK_StrategicActivityStatus">
+            <End Role="StrategicActivities" EntitySet="StrategicActivities" />
+            <End Role="Status" EntitySet="Status" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StrategyStrategicActions" Association="Self.FK_StrategyStrategicActions">
+            <End Role="Strategies" EntitySet="Strategies" />
+            <End Role="StrategicActions" EntitySet="StrategicActions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StrategyStrategySections" Association="Self.FK_StrategyStrategySections">
+            <End Role="StrategicActions" EntitySet="StrategicActions" />
+            <End Role="StrategySections" EntitySet="StrategySections" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="StrategicPlanModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="StrategicActivityID" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="StrategicActivity" Relationship="Self.FK_StrategicActivitySchedule" FromRole="Schedules" ToRole="StrategicActivities" />
+          <Property Name="Qt_One" Type="Boolean" />
+          <Property Name="Qt_Two" Type="Boolean" />
+          <Property Name="Qt_Three" Type="Boolean" />
+          <Property Name="Qt_Four" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="SectionNameDV" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SectionNameEN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="StrategySections" Relationship="Self.FK_SectionsStrategySections" FromRole="Sections" ToRole="StrategySections" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="StrategicActionID" Type="Int32" Nullable="false" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StatusDV" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StatusEN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StatusUser" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="StrategicActivity" Relationship="Self.FK_StrategicActivityStatus" FromRole="Status" ToRole="StrategicActivities" />
+        </EntityType>
+        <EntityType Name="StrategicAction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="RefCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ActionDV" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ActionEN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StrategyID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="StrategicActivities" Relationship="Self.FK_StrategicActionsStrategicActivity" FromRole="StrategicActions" ToRole="StrategicActivities" />
+          <NavigationProperty Name="Strategy" Relationship="Self.FK_StrategyStrategicActions" FromRole="StrategicActions" ToRole="Strategies" />
+          <NavigationProperty Name="StrategySections" Relationship="StrategicPlanModel.FK_StrategyStrategySections" FromRole="StrategicAction" ToRole="StrategySection" />
+        </EntityType>
+        <EntityType Name="StrategicActivity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="StrategicActionID" Type="Int32" Nullable="false" />
+          <Property Name="ActivityDV" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ActivityEN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BudgetNB" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="BudgetGrant" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Schedules" Relationship="Self.FK_StrategicActivitySchedule" FromRole="StrategicActivities" ToRole="Schedules" />
+          <NavigationProperty Name="Status" Relationship="Self.FK_StrategicActivityStatus" FromRole="StrategicActivities" ToRole="Status" />
+          <NavigationProperty Name="StrategicAction" Relationship="Self.FK_StrategicActionsStrategicActivity" FromRole="StrategicActivities" ToRole="StrategicActions" />
+        </EntityType>
+        <EntityType Name="Strategy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="RefCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StrategyDV" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StrategyEN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Result" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="StrategicActions" Relationship="Self.FK_StrategyStrategicActions" FromRole="Strategies" ToRole="StrategicActions" />
+          <Property Name="PillerID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Piller" Relationship="StrategicPlanModel.PillersStrategy" FromRole="Strategy" ToRole="Pillers" />
+        </EntityType>
+        <EntityType Name="StrategySection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="StrategyID" Type="Int32" Nullable="false" />
+          <Property Name="SectionID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Section" Relationship="Self.FK_SectionsStrategySections" FromRole="StrategySections" ToRole="Sections" />
+          <NavigationProperty Name="StrategicAction" Relationship="StrategicPlanModel.FK_StrategyStrategySections" FromRole="StrategySection" ToRole="StrategicAction" />
+        </EntityType>
+        <Association Name="FK_StrategicActivitySchedule">
+          <End Role="StrategicActivities" Type="Self.StrategicActivity" Multiplicity="1" />
+          <End Role="Schedules" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StrategicActivities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Schedules">
+              <PropertyRef Name="StrategicActivityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SectionsStrategySections">
+          <End Role="Sections" Type="Self.Section" Multiplicity="1" />
+          <End Role="StrategySections" Type="Self.StrategySection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sections">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StrategySections">
+              <PropertyRef Name="SectionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StrategicActivityStatus">
+          <End Role="StrategicActivities" Type="Self.StrategicActivity" Multiplicity="1" />
+          <End Role="Status" Type="Self.Status" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StrategicActivities">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Status">
+              <PropertyRef Name="StrategicActionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StrategicActionsStrategicActivity">
+          <End Role="StrategicActions" Type="Self.StrategicAction" Multiplicity="1" />
+          <End Role="StrategicActivities" Type="Self.StrategicActivity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StrategicActions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StrategicActivities">
+              <PropertyRef Name="StrategicActionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StrategyStrategicActions">
+          <End Role="Strategies" Type="Self.Strategy" Multiplicity="1" />
+          <End Role="StrategicActions" Type="Self.StrategicAction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Strategies">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StrategicActions">
+              <PropertyRef Name="StrategyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="StrategicPlanEntities" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="Schedules" EntityType="Self.Schedule" />
+          <EntitySet Name="Sections" EntityType="Self.Section" />
+          <EntitySet Name="Status" EntityType="Self.Status" />
+          <EntitySet Name="StrategicActions" EntityType="Self.StrategicAction" />
+          <EntitySet Name="StrategicActivities" EntityType="Self.StrategicActivity" />
+          <EntitySet Name="Strategies" EntityType="Self.Strategy" />
+          <EntitySet Name="StrategySections" EntityType="Self.StrategySection" />
+          <AssociationSet Name="FK_StrategicActivitySchedule" Association="Self.FK_StrategicActivitySchedule">
+            <End Role="StrategicActivities" EntitySet="StrategicActivities" />
+            <End Role="Schedules" EntitySet="Schedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SectionsStrategySections" Association="Self.FK_SectionsStrategySections">
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="StrategySections" EntitySet="StrategySections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StrategicActivityStatus" Association="Self.FK_StrategicActivityStatus">
+            <End Role="StrategicActivities" EntitySet="StrategicActivities" />
+            <End Role="Status" EntitySet="Status" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StrategicActionsStrategicActivity" Association="Self.FK_StrategicActionsStrategicActivity">
+            <End Role="StrategicActions" EntitySet="StrategicActions" />
+            <End Role="StrategicActivities" EntitySet="StrategicActivities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StrategyStrategicActions" Association="Self.FK_StrategyStrategicActions">
+            <End Role="Strategies" EntitySet="Strategies" />
+            <End Role="StrategicActions" EntitySet="StrategicActions" />
+          </AssociationSet>
+          <EntitySet Name="Pillers" EntityType="StrategicPlanModel.Pillers" />
+          <AssociationSet Name="PillersStrategy" Association="StrategicPlanModel.PillersStrategy">
+            <End Role="Pillers" EntitySet="Pillers" />
+            <End Role="Strategy" EntitySet="Strategies" />
+          </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="StrategicPlanModel.sysdiagram" />
+          <AssociationSet Name="FK_StrategyStrategySections" Association="StrategicPlanModel.FK_StrategyStrategySections">
+            <End Role="StrategicAction" EntitySet="StrategicActions" />
+            <End Role="StrategySection" EntitySet="StrategySections" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Pillers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="PillerDV" Type="String" Nullable="true" Unicode="true" MaxLength="Max" FixedLength="false">
+            <Documentation>
+              <Summary>Piller Dhivehi</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="PillerEN" Type="String" Nullable="true" Unicode="true" MaxLength="Max" FixedLength="false" />
+          <Property Name="PillerDescDV" Type="String" Nullable="true" Unicode="true" MaxLength="Max" FixedLength="false" />
+          <Property Name="PillerDescEN" Type="String" Nullable="true" Unicode="true" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Strategies" Relationship="StrategicPlanModel.PillersStrategy" FromRole="Pillers" ToRole="Strategy" />
+          <Property Name="PillerNo" Type="Int32" />
+        </EntityType>
+        <Association Name="PillersStrategy">
+          <End Type="StrategicPlanModel.Pillers" Role="Pillers" Multiplicity="1" />
+          <End Type="StrategicPlanModel.Strategy" Role="Strategy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pillers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Strategy">
+              <PropertyRef Name="PillerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_StrategyStrategySections">
+          <End Type="StrategicPlanModel.StrategicAction" Role="StrategicAction" Multiplicity="1" />
+          <End Type="StrategicPlanModel.StrategySection" Role="StrategySection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StrategicAction">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StrategySection">
+              <PropertyRef Name="StrategyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="StrategicPlanModelStoreContainer" CdmEntityContainer="StrategicPlanEntities">
+    <EntitySetMapping Name="Schedules">
+      <EntityTypeMapping TypeName="IsTypeOf(StrategicPlanModel.Schedule)">
+        <MappingFragment StoreEntitySet="Schedules">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StrategicActivityID" ColumnName="StrategicActivityID" />
+          <ScalarProperty Name="Year" ColumnName="Year" />
+          <ScalarProperty Name="Qt_One" ColumnName="Qt_One" />
+          <ScalarProperty Name="Qt_Two" ColumnName="Qt_Two" />
+          <ScalarProperty Name="Qt_Three" ColumnName="Qt_Three" />
+          <ScalarProperty Name="Qt_Four" ColumnName="Qt_Four" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sections">
+      <EntityTypeMapping TypeName="IsTypeOf(StrategicPlanModel.Section)">
+        <MappingFragment StoreEntitySet="Sections">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="SectionNameDV" ColumnName="SectionNameDV" />
+          <ScalarProperty Name="SectionNameEN" ColumnName="SectionNameEN" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Status">
+      <EntityTypeMapping TypeName="IsTypeOf(StrategicPlanModel.Status)">
+        <MappingFragment StoreEntitySet="Status">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StrategicActionID" ColumnName="StrategicActionID" />
+          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+          <ScalarProperty Name="StatusDV" ColumnName="StatusDV" />
+          <ScalarProperty Name="StatusEN" ColumnName="StatusEN" />
+          <ScalarProperty Name="StatusUser" ColumnName="StatusUser" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StrategicActions">
+      <EntityTypeMapping TypeName="IsTypeOf(StrategicPlanModel.StrategicAction)">
+        <MappingFragment StoreEntitySet="StrategicActions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RefCode" ColumnName="RefCode" />
+          <ScalarProperty Name="ActionDV" ColumnName="ActionDV" />
+          <ScalarProperty Name="ActionEN" ColumnName="ActionEN" />
+          <ScalarProperty Name="StrategyID" ColumnName="StrategyID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StrategicActivities">
+      <EntityTypeMapping TypeName="IsTypeOf(StrategicPlanModel.StrategicActivity)">
+        <MappingFragment StoreEntitySet="StrategicActivities">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StrategicActionID" ColumnName="StrategicActionID" />
+          <ScalarProperty Name="ActivityDV" ColumnName="ActivityDV" />
+          <ScalarProperty Name="ActivityEN" ColumnName="ActivityEN" />
+          <ScalarProperty Name="BudgetNB" ColumnName="BudgetNB" />
+          <ScalarProperty Name="BudgetGrant" ColumnName="BudgetGrant" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Strategies">
+      <EntityTypeMapping TypeName="IsTypeOf(StrategicPlanModel.Strategy)">
+        <MappingFragment StoreEntitySet="Strategies">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RefCode" ColumnName="RefCode" />
+          <ScalarProperty Name="StrategyDV" ColumnName="StrategyDV" />
+          <ScalarProperty Name="StrategyEN" ColumnName="StrategyEN" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="PillerID" ColumnName="PillerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StrategySections">
+      <EntityTypeMapping TypeName="IsTypeOf(StrategicPlanModel.StrategySection)">
+        <MappingFragment StoreEntitySet="StrategySections">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StrategyID" ColumnName="StrategyID" />
+          <ScalarProperty Name="SectionID" ColumnName="SectionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Pillers">
+      <EntityTypeMapping TypeName="IsTypeOf(StrategicPlanModel.Pillers)">
+        <MappingFragment StoreEntitySet="Pillers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="PillerDV" ColumnName="PillerDV" />
+          <ScalarProperty Name="PillerEN" ColumnName="PillerEN" />
+          <ScalarProperty Name="PillerDescDV" ColumnName="PillerDescDV" />
+          <ScalarProperty Name="PillerDescEN" ColumnName="PillerDescEN" />
+          <ScalarProperty Name="PillerNo" ColumnName="PillerNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="IsTypeOf(StrategicPlanModel.sysdiagram)">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams />
+  </Designer>
+</edmx:Edmx>
